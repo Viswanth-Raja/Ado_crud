@@ -2,10 +2,7 @@ import buyers from '../models/buyers_log.js'
 
 export default class buyerRepo {
   async b_id(id: number) {
-    const Buyer = await buyers.find(id)
-    if (!Buyer) {
-      return 'Buyer not found'
-    }
+    const Buyer = await buyers.findOrFail(id)
     return Buyer
   }
 
@@ -19,22 +16,15 @@ export default class buyerRepo {
   }
 
   async update(id: number, data: any) {
-    const Buyer = await buyers.find(id)
-    if (!Buyer) {
-      return 'ID not found'
-    }
-
+    const Buyer = await buyers.findOrFail(id)
     Buyer.merge(data)
     Buyer.save()
     return 'Buyer Info Updated'
   }
 
   async delete_Buyer(id: number) {
-    const Buyer = await buyers.find(id)
-    if (Buyer) {
-      await Buyer.delete()
-      return 'Buyer Deleted!'
-    }
-    return 'Buyerr Not found'
+    const Buyer = await buyers.findOrFail(id)
+    await Buyer.delete()
+    return 'Buyer Deleted!'
   }
 }

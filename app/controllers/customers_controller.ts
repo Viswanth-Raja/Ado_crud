@@ -4,6 +4,7 @@ import buyerRepo from '../Repositories/buyersOperations.js'
 import { PasswordValidator } from '#validators/user_validate'
 import { createValidator } from '#validators/create_product'
 import { createBuyerValidator, updateBuyerValidator } from '#validators/BuyerValidator'
+import { queryParamValidator } from '#validators/query_parameter'
 
 const Operations = new ProdRepo()
 const buyerOperations = new buyerRepo()
@@ -21,11 +22,15 @@ export default class CustomersController {
   }
 
   public async showAll({ request, response }: HttpContext) {
-    const id = Number(request.qs().b_id)
-    if (id) {
-      return response.ok(await buyerOperations.b_id(id))
+    const query = await request.validateUsing(queryParamValidator, {
+      data: request.qs(),
+    })
+
+    if (query.b_id) {
+      return response.ok(await Operations.p_id(query.b_id))
     }
-    return response.ok(await buyerOperations.b_all())
+
+    return response.ok(await Operations.p_all())
   }
 
   public async fullUpdate({ request, response }: HttpContext) {

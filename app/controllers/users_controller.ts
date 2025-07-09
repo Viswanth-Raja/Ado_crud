@@ -7,6 +7,7 @@ import {
   PasswordValidator,
 } from '#validators/user_validate'
 import UserRepo from '../Repositories/userOperations.js'
+import { queryParamValidator } from '#validators/query_parameter'
 
 const Operations = new ProdRepo()
 const userOperations = new UserRepo()
@@ -25,11 +26,15 @@ export default class UsersController {
   }
 
   public async showAll({ request, response }: HttpContext) {
-    const id = Number(request.qs().u_id)
-    if (id) {
-      return response.ok(await userOperations.u_id(id))
+    const query = await request.validateUsing(queryParamValidator, {
+      data: request.qs(),
+    })
+
+    if (query.u_id) {
+      return response.ok(await Operations.p_id(query.u_id))
     }
-    return response.ok(await userOperations.u_all())
+
+    return response.ok(await Operations.p_all())
   }
 
   public async fullUpdate({ request, response }: HttpContext) {

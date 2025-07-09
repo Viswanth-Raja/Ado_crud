@@ -9,9 +9,6 @@ export default class ProdRepo {
 
   async p_id(id: number) {
     const item = await product.findOrFail(id)
-    if (!item || item['status'] == 'bought') {
-      return 'Product not Available!'
-    }
     return item
   }
 
@@ -32,11 +29,7 @@ export default class ProdRepo {
   }
 
   async update(id: number, data: any) {
-    const item = await product.find(id)
-    if (!item) {
-      return 'ID not found'
-    }
-
+    const item = await product.findOrFail(id)
     item.comments.all_cmts.push(data.comments)
     item.merge(data)
     await item.save()
@@ -44,25 +37,14 @@ export default class ProdRepo {
   }
 
   async delete(id: number) {
-    const item = await product.find(id)
-    if (item) {
-      await item.delete()
-      return 'Product Deleted!'
-    }
-    return 'Product Not found'
+    const item = await product.findOrFail(id)
+    await item.delete()
+    return 'Product Deleted!'
   }
 
   async buy(id: number, u_id: number, passw: any) {
-    const item = await product.find(id)
-    const user = await users.find(u_id)
-
-    if (!item) {
-      return 'Product Not found'
-    }
-
-    if (!user) {
-      return 'User  Not found'
-    }
+    const item = await product.findOrFail(id)
+    const user = await users.findOrFail(u_id)
 
     if (user.p_word !== passw) {
       return 'Password Mismatch'
@@ -83,9 +65,8 @@ export default class ProdRepo {
   }
 
   async sell(u_id: number, passw: string, data: any) {
-    const user = await users.find(u_id)
+    const user = await users.findOrFail(u_id)
 
-    if (!user) return 'User Not found'
     if (user.p_word !== passw) return 'Password Mismatch'
 
     const buyerEntry = await BuyersLog.query()
