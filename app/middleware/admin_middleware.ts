@@ -7,11 +7,10 @@ export default class AdminMiddleware {
     const serv_passw = '1234'
 
     if (role === 'admin' && password === serv_passw) {
-      console.log('Login Successful')
-      next()
+      console.log('Operated as Admin')
+      await next()
     } else {
-      console.log('Login Failure! Only Admin has access')
-      next()
+      console.log('Restricted Action!')
     }
   }
 }

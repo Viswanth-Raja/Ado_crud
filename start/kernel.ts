@@ -35,7 +35,6 @@ server.use([
 router.use([
   () => import('@adonisjs/core/bodyparser_middleware'),
   () => import('@adonisjs/auth/initialize_auth_middleware'),
-  () => import('#middleware/admin_middleware'),
 ])
 
 /**
@@ -43,5 +42,5 @@ router.use([
  * the routes or the routes group.
  */
 export const middleware = router.named({
-  auth: () => import('#middleware/admin_middleware'),
+  admin: () => import('#middleware/admin_middleware'),
 })

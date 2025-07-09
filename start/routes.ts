@@ -11,15 +11,15 @@ import router from '@adonisjs/core/services/router'
 import Market from '../app/controllers/product_controller.js'
 import User from '../app/controllers/users_controller.js'
 import buyer from '../app/controllers/customers_controller.js'
-// import { middleware } from './kernel.js'
+import { middleware } from './kernel.js'
 
 router
   .group(() => {
     router.get('/', [Market, 'showAll'])
-    router.post('/', [Market, 'store'])
-    router.put('/', [Market, 'fullUpdate'])
-    router.patch('/', [Market, 'partialUpdate'])
-    router.delete('/', [Market, 'destroy'])
+    router.post('/', [Market, 'store']).use(middleware.admin())
+    router.put('/', [Market, 'fullUpdate']).use(middleware.admin())
+    router.patch('/', [Market, 'partialUpdate']).use(middleware.admin())
+    router.delete('/', [Market, 'destroy']).use(middleware.admin())
   })
   .prefix('/products')
 
@@ -32,20 +32,20 @@ router
 
 router
   .group(() => {
-    router.post('/', [User, 'store'])
+    router.post('/', [User, 'store']).use(middleware.admin())
     router.get('/', [User, 'showAll'])
-    router.put('/', [User, 'fullUpdate'])
-    router.patch('/', [User, 'partialUpdate'])
-    router.delete('/', [User, 'destroy'])
+    router.put('/', [User, 'fullUpdate']).use(middleware.admin())
+    router.patch('/', [User, 'partialUpdate']).use(middleware.admin())
+    router.delete('/', [User, 'destroy']).use(middleware.admin())
   })
   .prefix('Users')
 
 router
   .group(() => {
-    router.post('/', [buyer, 'store'])
+    router.post('/', [buyer, 'store']).use(middleware.admin())
     router.get('/', [buyer, 'showAll'])
-    router.put('/', [buyer, 'fullUpdate'])
-    router.patch('/', [buyer, 'partialUpdate'])
-    router.delete('/', [buyer, 'destroy'])
+    router.put('/', [buyer, 'fullUpdate']).use(middleware.admin())
+    router.patch('/', [buyer, 'partialUpdate']).use(middleware.admin())
+    router.delete('/', [buyer, 'destroy']).use(middleware.admin())
   })
   .prefix('Buyer')

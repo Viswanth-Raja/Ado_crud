@@ -8,7 +8,7 @@ export default class ProdRepo {
   }
 
   async p_id(id: number) {
-    const item = await product.find(id)
+    const item = await product.findOrFail(id)
     if (!item || item['status'] == 'bought') {
       return 'Product not Available!'
     }
@@ -38,7 +38,6 @@ export default class ProdRepo {
     }
 
     item.comments.all_cmts.push(data.comments)
-    await item.save()
     item.merge(data)
     await item.save()
     return 'Product Updated'

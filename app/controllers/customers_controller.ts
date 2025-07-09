@@ -7,7 +7,6 @@ import { createBuyerValidator, updateBuyerValidator } from '#validators/BuyerVal
 
 const Operations = new ProdRepo()
 const buyerOperations = new buyerRepo()
-
 export default class CustomersController {
   public async sell({ request, response }: HttpContext) {
     const U_id = Number(request.qs().u_id)
